@@ -48,10 +48,10 @@ func InjectRoleController(db *gorm.DB) controllers.RoleController {
 	controller := controllers.NewRoleController(service)
 	return controller
 }
-func InjectDevisiController(db *gorm.DB) controllers.DevisiController {
-	repository := repository.NewDevisiRepository(db)
-	service := service.NewDevisiService(repository)
-	controller := controllers.NewDevisiController(service)
+func InjectDivisiController(db *gorm.DB) controllers.DivisiController {
+	repository := repository.NewDivisiRepository(db)
+	service := service.NewDivisiService(repository)
+	controller := controllers.NewDivisiController(service)
 	return controller
 }
 func InjectJabatanController(db *gorm.DB) controllers.JabatanController {

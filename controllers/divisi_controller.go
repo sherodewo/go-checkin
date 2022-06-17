@@ -13,29 +13,29 @@ import (
 	"strconv"
 )
 
-type DevisiController struct {
+type DivisiController struct {
 	BaseBackendController
-	service *service.DevisiService
+	service *service.DivisiService
 }
 
-func NewDevisiController(service *service.DevisiService) DevisiController {
-	return DevisiController{
+func NewDivisiController(service *service.DivisiService) DivisiController {
+	return DivisiController{
 		BaseBackendController: BaseBackendController{
-			Menu:        "Devisi",
+			Menu:        "Divisi",
 			BreadCrumbs: []map[string]interface{}{},
 		},
 		service: service,
 	}
 }
-func (c *DevisiController) Index(ctx echo.Context) error {
+func (c *DivisiController) Index(ctx echo.Context) error {
 	breadCrumbs := map[string]interface{}{
 		"menu": "List Role",
-		"link": "/check/admin/devisi",
+		"link": "/check/admin/divisi",
 	}
-	return Render(ctx, "Devisi List", "devisi/index", c.Menu, session.GetFlashMessage(ctx),
+	return Render(ctx, "Divisi List", "divisi/index", c.Menu, session.GetFlashMessage(ctx),
 		append(c.BreadCrumbs, breadCrumbs), nil)
 }
-func (c *DevisiController) List(ctx echo.Context) error {
+func (c *DivisiController) List(ctx echo.Context) error {
 
 	draw, err := strconv.Atoi(ctx.Request().URL.Query().Get("draw"))
 	search := ctx.Request().URL.Query().Get("search[value]")
@@ -59,11 +59,11 @@ func (c *DevisiController) List(ctx echo.Context) error {
 					<button class="btn btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true"> Actions</button>
                       <ul class="dropdown-menu" role="menu">
                       <li>
-                      <a href="/check/admin/devisi/edit/` + v.ID + `" style="text-decoration: none;font-weight: 400; color: #333;">
+                      <a href="/check/admin/divisi/edit/` + v.ID + `" style="text-decoration: none;font-weight: 400; color: #333;">
                       <i class="fa fa-edit"></i>Edit </a>
                       </li>
                       <li>
-                      <a href="/check/admin/devisi/detail/` + v.ID + `"style="text-decoration: none;font-weight: 400; color: #333;">
+                      <a href="/check/admin/divisi/detail/` + v.ID + `"style="text-decoration: none;font-weight: 400; color: #333;">
                       <i class="fa fa-user"></i>Detail </a>
                       </li>
                       <li>
@@ -74,10 +74,10 @@ func (c *DevisiController) List(ctx echo.Context) error {
                       </div>`
 
 		listOfData[k] = map[string]interface{}{
-			"id":     v.ID,
-			"name":   v.Name,
+			"id":          v.ID,
+			"name":        v.Name,
 			"description": v.Description,
-			"action": action,
+			"action":      action,
 		}
 	}
 
@@ -90,20 +90,20 @@ func (c *DevisiController) List(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, &result)
 }
 
-func (c *DevisiController) Add(ctx echo.Context) error {
+func (c *DivisiController) Add(ctx echo.Context) error {
 	breadCrumbs := map[string]interface{}{
 		"menu": "Add",
-		"link": "/check/admin/devisi/add",
+		"link": "/check/admin/divisi/add",
 	}
-	return Render(ctx, "Add Devisi", "devisi/add", c.Menu, session.GetFlashMessage(ctx),
+	return Render(ctx, "Add Divisi", "divisi/add", c.Menu, session.GetFlashMessage(ctx),
 		append(c.BreadCrumbs, breadCrumbs), nil)
 }
-func (c *DevisiController) Store(ctx echo.Context) error {
-	var devisiDto dto.DevisiDto
-	if err := ctx.Bind(&devisiDto); err != nil {
+func (c *DivisiController) Store(ctx echo.Context) error {
+	var divisiDto dto.DivisiDto
+	if err := ctx.Bind(&divisiDto); err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error binding data"})
 	}
-	if err := ctx.Validate(&devisiDto); err != nil {
+	if err := ctx.Validate(&divisiDto); err != nil {
 		var validationErrors []models.ValidationError
 		if errs, ok := err.(validator.ValidationErrors); ok {
 			validationErrors = models.WrapValidationErrors(errs)
@@ -111,7 +111,7 @@ func (c *DevisiController) Store(ctx echo.Context) error {
 		return ctx.JSON(400, echo.Map{"message": "error validation", "errors": validationErrors})
 	}
 
-	result, err := c.service.SaveDevisi(devisiDto)
+	result, err := c.service.SaveDivisi(divisiDto)
 	if err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error save data user"})
 	}
@@ -120,55 +120,55 @@ func (c *DevisiController) Store(ctx echo.Context) error {
 	return ctx.JSON(200, echo.Map{"message": "data has been saved", "data": result})
 }
 
-func (c *DevisiController) Edit(ctx echo.Context) error {
+func (c *DivisiController) Edit(ctx echo.Context) error {
 	id := ctx.Param("id")
 	data, err := c.service.FindUserById(id)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			session.SetFlashMessage(ctx, err.Error(), "error", nil)
-			return ctx.Redirect(302, "/check/admin/devisi")
+			return ctx.Redirect(302, "/check/admin/divisi")
 		}
 		session.SetFlashMessage(ctx, err.Error(), "error", nil)
-		return ctx.Redirect(302, "/check/admin/devisi")
+		return ctx.Redirect(302, "/check/admin/divisi")
 	}
 	breadCrumbs := map[string]interface{}{
 		"menu": "Edit",
-		"link": "/check/admin/devisi/edit",
+		"link": "/check/admin/divisi/edit",
 	}
 
-	dataDevisi := models.Devisi{
-		ID:     data.ID,
-		Name:       data.Name,
-		Description:      data.Description,
+	dataDivisi := models.Divisi{
+		ID:          data.ID,
+		Name:        data.Name,
+		Description: data.Description,
 	}
-	return Render(ctx, "Edit Devisi", "devisi/edit", c.Menu, session.GetFlashMessage(ctx),
-		append(c.BreadCrumbs, breadCrumbs), dataDevisi)
+	return Render(ctx, "Edit Divisi", "divisi/edit", c.Menu, session.GetFlashMessage(ctx),
+		append(c.BreadCrumbs, breadCrumbs), dataDivisi)
 }
 
-func (c *DevisiController) Delete(ctx echo.Context) error {
+func (c *DivisiController) Delete(ctx echo.Context) error {
 	id := ctx.Param("id")
-	err := c.service.DeleteDevisi(id)
+	err := c.service.DeleteDivisi(id)
 	if err != nil {
 		return ctx.JSON(500, echo.Map{"message": "error when trying delete data"})
 	}
 	return ctx.JSON(200, echo.Map{"message": "delete data has been deleted"})
 }
 
-func (c *DevisiController) Update(ctx echo.Context) error {
+func (c *DivisiController) Update(ctx echo.Context) error {
 	id := ctx.Param("id")
-	var devisiDto dto.DevisiDto
-	if err := ctx.Bind(&devisiDto); err != nil {
+	var divisiDto dto.DivisiDto
+	if err := ctx.Bind(&divisiDto); err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error binding data"})
 	}
 
-	if err := ctx.Validate(&devisiDto); err != nil {
+	if err := ctx.Validate(&divisiDto); err != nil {
 		var validationErrors []models.ValidationError
 		if errs, ok := err.(validator.ValidationErrors); ok {
 			validationErrors = models.WrapValidationErrors(errs)
 		}
 		return ctx.JSON(400, echo.Map{"message": "error validation", "errors": validationErrors})
 	}
-	result, err := c.service.UpdateDevisi(id, devisiDto)
+	result, err := c.service.UpdateDivisi(id, divisiDto)
 	if err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error update data user"})
 	}
@@ -176,22 +176,22 @@ func (c *DevisiController) Update(ctx echo.Context) error {
 	return ctx.JSON(200, echo.Map{"message": "data has been updated", "data": result})
 }
 
-func (c *DevisiController) View(ctx echo.Context) error {
+func (c *DivisiController) View(ctx echo.Context) error {
 	id := ctx.Param("id")
-	var data models.Devisi
+	var data models.Divisi
 	err := c.service.GetDbInstance().First(&data, "id =?", id).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			session.SetFlashMessage(ctx, err.Error(), "error", nil)
-			return ctx.Redirect(302, "/check/admin/devisi")
+			return ctx.Redirect(302, "/check/admin/divisi")
 		}
 		session.SetFlashMessage(ctx, err.Error(), "error", nil)
-		return ctx.Redirect(302, "/check/admin/devisi")
+		return ctx.Redirect(302, "/check/admin/divisi")
 	}
 	breadCrumbs := map[string]interface{}{
 		"menu": "Detail Role",
-		"link": "/check/admin/devisi/detail",
+		"link": "/check/admin/divisi/detail",
 	}
 	return Render(ctx, "Detail Role ", "role/view", c.Menu, session.FlashMessage{},
-		append(c.BreadCrumbs, breadCrumbs), echo.Map{"Devisi": data})
+		append(c.BreadCrumbs, breadCrumbs), echo.Map{"Divisi": data})
 }

@@ -6,20 +6,20 @@ import (
 	"time"
 )
 
-// Devisi Struct
-type Devisi struct {
+// Divisi Struct
+type Divisi struct {
 	ID          string    `gorm:"type:varchar(50);column:id;primary_key:true"`
 	Name        string    `gorm:"type:varchar(50);column:name"`
 	Description string    `gorm:"type:varchar(255);column:description"`
 	CreatedAt   time.Time `gorm:"column:created_at"`
 }
 
-func (c Devisi) TableName() string {
-	return "devisi"
+func (c Divisi) TableName() string {
+	return "divisi"
 }
 
 // BeforeCreate - Lifecycle callback - Generate UUID before persisting
-func (c *Devisi) BeforeCreate(tx *gorm.DB) (err error) {
+func (c *Divisi) BeforeCreate(tx *gorm.DB) (err error) {
 	c.ID = uuid.New().String()
 	return
 }
