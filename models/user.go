@@ -16,6 +16,9 @@ type User struct {
 	IsActive   int       `gorm:"column:is_active"`
 	TypeUser   int       `gorm:"column:type_user"`
 	UserRoleID string    `gorm:"type:varchar(50);column:user_role_id"`
+	JabatanID  string    `gorm:"type:varchar(50);column:jabatan_id"`
+	DivisiID   string    `gorm:"type:varchar(50);column:divisi_id"`
+	PhotoID    string    `gorm:"type:varchar(50);column:photo_id"`
 	CreatedAt  time.Time `gorm:"column:created_at"`
 	UpdatedAt  time.Time `gorm:"column:updated_at"`
 }
