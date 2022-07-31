@@ -111,13 +111,13 @@ func (c *DivisiController) Store(ctx echo.Context) error {
 		return ctx.JSON(400, echo.Map{"message": "error validation", "errors": validationErrors})
 	}
 
-	result, err := c.service.SaveDivisi(divisiDto)
+	_, err := c.service.SaveDivisi(divisiDto)
 	if err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error save data user"})
 	}
 
 	session.SetFlashMessage(ctx, "save data success", "success", nil)
-	return ctx.JSON(200, echo.Map{"message": "data has been saved", "data": result})
+	return ctx.Redirect(302, "/check/admin/divisi")
 }
 
 func (c *DivisiController) Edit(ctx echo.Context) error {
@@ -168,12 +168,12 @@ func (c *DivisiController) Update(ctx echo.Context) error {
 		}
 		return ctx.JSON(400, echo.Map{"message": "error validation", "errors": validationErrors})
 	}
-	result, err := c.service.UpdateDivisi(id, divisiDto)
+	_, err := c.service.UpdateDivisi(id, divisiDto)
 	if err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error update data user"})
 	}
 	session.SetFlashMessage(ctx, "update data success", "success", nil)
-	return ctx.JSON(200, echo.Map{"message": "data has been updated", "data": result})
+	return ctx.Redirect(302, "/check/admin/divisi")
 }
 
 func (c *DivisiController) View(ctx echo.Context) error {

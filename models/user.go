@@ -8,9 +8,9 @@ import (
 
 // User Struct
 type User struct {
-	UserID     string    `gorm:"type:varchar(50);column:user_id;primary_key:true"`
+	UserID     string    `gorm:"type:varchar(50);column:user_id;primary_key:true" json:"user_id"`
 	Nik        string    `gorm:"type:varchar(10);column:nik"`
-	Name       string    `gorm:"type:varchar(50);column:name"`
+	Name       string    `gorm:"type:varchar(50);column:name" json:"name"`
 	Email      string    `gorm:"type:varchar(100);column:email;unique"`
 	Password   string    `gorm:"type:varchar(100);column:password"`
 	IsActive   int       `gorm:"column:is_active"`

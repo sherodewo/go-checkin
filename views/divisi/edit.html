@@ -1,0 +1,124 @@
+{{define "content"}}
+<div class="row">
+    <div class="col-lg-12">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Divisi Edit
+                    </h3>
+                </div>
+            </div>
+
+            <!--begin::Form-->
+            <form class="kt-form" method="POST" action="/check/admin/divisi/update/{{.data.ID}}" enctype="multipart/form-data">
+                <div class="kt-portlet__body">
+                    {{if .flashMessage}}
+                    {{if (eq .flashMessage.Type "error")}}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <div class="alert-text">{{.flashMessage.Message}}</div>
+                        <div class="alert-close">
+                            <i class="flaticon2-cross kt-icon-sm" data-dismiss="alert"></i>
+                        </div>
+                    </div>
+                    {{end}}
+                    {{end}}
+                    <div class="kt-section kt-section--first">
+                        <input type="hidden" id="id" value="{{.data.ID}}">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter Name"
+                                   value="{{.data.Name}}">
+<!--                            <span class="form-text text-muted">Please enter your Nik</span>-->
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <input type="text" name="description" class="form-control" placeholder="Enter Description"
+                                   value="{{.data.Description}}">
+<!--                            <span class="form-text text-muted">Please enter your Name</span>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-portlet__foot">
+                    <div class="kt-form__actions">
+                        <button type="submit" class="btn btn-primary btn-brand btn-pill btn-elevate"
+                                id="kt_submit_update">Submit
+                        </button>
+                        <a href="/check/admin/divisi" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </form>
+
+            <!--end::Form-->
+        </div>
+
+        <!--end::Portlet-->
+    </div>
+</div>
+{{end}}
+
+{{define "scripts"}}
+<script type="text/javascript">
+    $('#kt_submit_update').click(function (e) {
+        e.preventDefault();
+        var btn = $(this);
+        var form = $(this).closest('form');
+
+
+        form.validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                description: {
+                    required: true,
+                },
+
+            }
+        });
+
+        if (!form.valid()) {
+            return;
+        }
+
+        swal.fire({
+            title: 'Please Wait..!',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+            onOpen: () => {
+                swal.showLoading()
+            }
+        });
+        form.ajaxSubmit({
+            type: 'POST',
+            url: '/check/admin/divisi/update/{{.data.ID}}',
+            beforeSend: function (req) {
+
+            },
+            success: function (response, status, xhr, $form) {
+                // similate 2s delay
+                swal.hideLoading();
+                Swal.fire({
+                    type: 'success',
+                    title: 'Success',
+                    icon: 'success',
+                    text: "Data berhasil di update",
+                });
+                window.location.href = "/check/admin/divisi";
+            },
+            error: function (response, status, xhr, $form) {
+                swal.hideLoading();
+                Swal.fire({
+                    type: 'error',
+                    title: 'Error',
+                    icon: 'error',
+                    text: response.responseJSON.message,
+                });
+            }
+        });
+    });
+</script>
+{{end}}
+

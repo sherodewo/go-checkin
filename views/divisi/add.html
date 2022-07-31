@@ -1,0 +1,61 @@
+{{define "content"}}
+<div class="row">
+    <div class="col-lg-12">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Divisi Add
+                    </h3>
+                </div>
+            </div>
+
+            <!--begin::Form-->
+            <form class="kt-form" method="POST" action="/check/admin/divisi/store" enctype="multipart/form-data">
+
+                <div class="kt-portlet__body">
+                    {{if .flashMessage}}
+                    {{if (eq .flashMessage.Type "error")}}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <div class="alert-text">{{.flashMessage.Message}}</div>
+                        <div class="alert-close">
+                            <i class="flaticon2-cross kt-icon-sm" data-dismiss="alert"></i>
+                        </div>
+                    </div>
+                    {{end}}
+                    {{end}}
+                    <div class="kt-section kt-section--first">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter name divisi" required>
+<!--                            <span class="form-text text-muted">Please enter name role</span>-->
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" name="description" class="form-control" placeholder="Enter description" required>
+<!--                            <span class="form-text text-muted">Please enter description</span>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-portlet__foot">
+                    <div class="kt-form__actions">
+                        <button type="submit" class="btn btn-primary btn-brand btn-pill btn-elevate" id="kt_submit">
+                            Submit
+                        </button>
+                        <a href="/check/admin/divisi" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </form>
+
+            <!--end::Form-->
+        </div>
+
+        <!--end::Portlet-->
+    </div>
+</div>
+{{end}}
+
+{{define "scripts"}}
+
+{{end}}

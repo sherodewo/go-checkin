@@ -252,3 +252,11 @@ func (c *UserController) Profile(ctx echo.Context) error {
 	return Render(ctx, "Profile User", "user/profile", c.Menu, session.GetFlashMessage(ctx),
 		append(c.BreadCrumbs, breadCrumbs), nil)
 }
+
+func (c *UserController) GetAllUser(ctx echo.Context) error {
+	data, err := c.service.FindAllUsers()
+	if err != nil {
+		return ctx.JSON(500, echo.Map{"message": "error when trying delete data"})
+	}
+	return ctx.JSON(200, data)
+}

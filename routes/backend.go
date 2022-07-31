@@ -4,6 +4,8 @@ import (
 	"errors"
 	"github.com/foolin/goview/supports/echoview-v4"
 	"go-checkin/config"
+	"go-checkin/repository"
+	"go-checkin/service"
 	"html/template"
 	"strconv"
 	"time"
@@ -148,8 +150,13 @@ func BackendRoute(e *echo.Echo, db *gorm.DB) {
 		log.Info("ERROR GET MENU BY ROLE ", err.Error())
 	}
 
-	homeController := controllers.NewHomeController()
+	Repository := repository.NewHomeRepository(db)
+	Service := service.NewHomeService(Repository)
+	homeController := controllers.NewHomeController(Service)
 	backendGroup.GET("/home", homeController.Index)
+	backendGroup.GET("/home/datatable", homeController.List)
+	bGroup.POST("/export/excel", homeController.DownloadExcel)
+	bGroup.GET("/download", homeController.ExportExcel)
 
 	authController := config.InjectAuthController(db)
 	backendGroup.POST("/logout", authController.Logout)
@@ -158,6 +165,7 @@ func BackendRoute(e *echo.Echo, db *gorm.DB) {
 	userController := config.InjectUserController(db)
 	userGroup := backendGroup.Group("/register", authorizationMiddleware.AuthorizationMiddleware(menus, "user"))
 	userGroup.GET("", userController.Index)
+	userGroup.GET("/all", userController.GetAllUser)
 	userGroup.POST("/store", userController.Store)
 	userGroup.GET("/add", userController.Add)
 	userGroup.GET("/profile", userController.Profile)

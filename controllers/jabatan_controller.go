@@ -74,10 +74,10 @@ func (c *JabatanController) List(ctx echo.Context) error {
                       </div>`
 
 		listOfData[k] = map[string]interface{}{
-			"id":     v.ID,
-			"name":   v.Name,
+			"id":          v.ID,
+			"name":        v.Name,
 			"description": v.Description,
-			"action": action,
+			"action":      action,
 		}
 	}
 
@@ -111,13 +111,13 @@ func (c *JabatanController) Store(ctx echo.Context) error {
 		return ctx.JSON(400, echo.Map{"message": "error validation", "errors": validationErrors})
 	}
 
-	result, err := c.service.SaveJabatan(jabatanDto)
+	_, err := c.service.SaveJabatan(jabatanDto)
 	if err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error save data user"})
 	}
 
 	session.SetFlashMessage(ctx, "save data success", "success", nil)
-	return ctx.JSON(200, echo.Map{"message": "data has been saved", "data": result})
+	return ctx.Redirect(302, "/check/admin/jabatan")
 }
 
 func (c *JabatanController) Edit(ctx echo.Context) error {
@@ -137,9 +137,9 @@ func (c *JabatanController) Edit(ctx echo.Context) error {
 	}
 
 	dataJabatan := models.Jabatan{
-		ID:     data.ID,
-		Name:       data.Name,
-		Description:      data.Description,
+		ID:          data.ID,
+		Name:        data.Name,
+		Description: data.Description,
 	}
 	return Render(ctx, "Edit Jabatan", "jabatan/edit", c.Menu, session.GetFlashMessage(ctx),
 		append(c.BreadCrumbs, breadCrumbs), dataJabatan)
@@ -168,12 +168,12 @@ func (c *JabatanController) Update(ctx echo.Context) error {
 		}
 		return ctx.JSON(400, echo.Map{"message": "error validation", "errors": validationErrors})
 	}
-	result, err := c.service.UpdateJabatan(id, jabatanDto)
+	_, err := c.service.UpdateJabatan(id, jabatanDto)
 	if err != nil {
 		return ctx.JSON(400, echo.Map{"message": "error update data user"})
 	}
 	session.SetFlashMessage(ctx, "update data success", "success", nil)
-	return ctx.JSON(200, echo.Map{"message": "data has been updated", "data": result})
+	return ctx.Redirect(302, "/check/admin/jabatan")
 }
 
 func (c *JabatanController) View(ctx echo.Context) error {

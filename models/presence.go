@@ -8,15 +8,33 @@ import (
 
 // Presence Struct
 type Presence struct {
-	ID        string    `gorm:"type:varchar(100);column:id;primary_key:true"`
-	UserID    string    `gorm:"type:varchar(100);column:user_id"`
-	PhotoID   string    `gorm:"type:varchar(100);column:photo_id"`
-	CheckIN   time.Time `gorm:"column:checkin"`
-	CheckOut  time.Time `gorm:"column:checkout"`
-	CreatedAt time.Time `gorm:"column:created_at"`
+	ID           string    `gorm:"column:id;primary_key:true"`
+	UserID       string    `gorm:"column:user_id"`
+	Checkin      time.Time `gorm:"column:checkin"`
+	Checkout     time.Time `gorm:"column:checkout"`
+	CreatedAt    time.Time `gorm:"column:created_at"`
+	PhotoID      string    `gorm:"column:photo_id"`
+	LocationName string    `gorm:"column:location_name"`
+	Location     string    `gorm:"column:location"`
+}
+
+type PresenceDatatable struct {
+	Name         string    `gorm:"type:varchar(100);column:name" json:"name"`
+	ID           string    `gorm:"column:id;primary_key:true"`
+	UserID       string    `gorm:"column:user_id"`
+	Checkin      time.Time `gorm:"column:checkin"`
+	Checkout     time.Time `gorm:"column:checkout"`
+	CreatedAt    time.Time `gorm:"column:created_at"`
+	PhotoID      string    `gorm:"column:photo_id"`
+	LocationName string    `gorm:"column:location_name"`
+	Location     string    `gorm:"column:location"`
 }
 
 func (c Presence) TableName() string {
+	return "presence"
+}
+
+func (c PresenceDatatable) TableName() string {
 	return "presence"
 }
 

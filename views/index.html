@@ -1,40 +1,79 @@
 {{define "content"}}
-    {{if .flashMessage}}
-        {{if (eq .flashMessage.Type "success")}}
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <div class="alert-text">{{.flashMessage.Message}} Welcome {{.data.Name}} </div>
-                <div class="alert-close">
-                    <i class="flaticon2-cross kt-icon-sm" data-dismiss="alert"></i>
+{{if .flashMessage}}
+{{if (eq .flashMessage.Type "success")}}
+<div class="alert alert-success alert-dismissible" role="alert">
+    <div class="alert-text">{{.flashMessage.Message}} Welcome {{.data.Name}}</div>
+    <div class="alert-close">
+        <i class="flaticon2-cross kt-icon-sm" data-dismiss="alert"></i>
+    </div>
+</div>
+{{end}}
+{{end}}
+<p>DASHBOARD</p>
+<div class="kt-portlet kt-portlet--mobile">
+
+    <div class="kt-portlet__body">
+    <label>Filter</label>
+        <hr>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label>User</label>
+                    <select class="form-control kt-select2" id="user"
+                            name="save_result_to" style="width: 100%;">
+                        <option selected disabled>Select User</option>
+                    </select>
+                    <span class="form-text text-muted">Select User for Filters.</span>
                 </div>
             </div>
-        {{end}}
-    {{end}}
-    <p>HOME</p>
-
-        <div class="card">
-            <div class="card-header">
-                Welcome, {{.data.Email}}
+            <div class="col-6">
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <input type="text" class="form-control" id="kt_daterangepicker_1"
+                           placeholder="Select time"/>
+                </div>
             </div>
-            <div class="card-body">
-                <table>
+            <div class="col-3">
+                <button type="button" class="btn btn-sm btn-brand btn-elevate btn-pill" onclick="excel()"><i class="la la-filter">Filter</i>  </button>
+                <a  class="btn btn-sm btn-success btn-elevate btn-pill" href="/check/download"  id="download"><i class="la la-file-excel-o">Download Excel</i> </a>
+            </div>
+
+        </div>
+        <hr>
+        <br>
+        <div id="append-here">
+            <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid" id="table-home">
+                <table class="table table-striped- table-bordered table-hover table-checkable" id="kt_table_home"
+                       style="width: 100%">
+                    <thead>
                     <tr>
-                        <td>Name</td>
-                        <td>: {{.data.Name}}</td>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Check IN</th>
+                        <th>Check OUT</th>
                     </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
                 </table>
             </div>
-        </div>
-        <script>
-            function setCookie(name,value,days) {
-                var expires = "";
-                if (days) {
-                    var date = new Date();
-                    date.setTime(date.getTime() + (days*24*60*60*1000));
-                    expires = "; expires=" + date.toUTCString();
-                }
-                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-            }
 
-            setCookie("name", {{.data.Name}},1)
-        </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    //Datatable register
+
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+</script>
 {{end}}

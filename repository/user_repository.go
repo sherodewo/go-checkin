@@ -29,7 +29,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 
 func (r userRepository) FindAll() ([]models.User, error) {
 	var entities []models.User
-	err := r.DB.Find(&entities).Error
+	err := r.DB.Where("type_user = ? ", 2).Find(&entities).Error
 	return entities, err
 }
 
@@ -52,7 +52,7 @@ func (r userRepository) FindAllWhere(operation string, orderType string, orderBy
 
 func (r userRepository) FindById(id string) (models.User, error) {
 	var entity models.User
-	err := r.DB.Where("[user].user_id = ?", id).First(&entity).Error
+	err := r.DB.Where("user_id = ?", id).Find(&entity).Error
 	return entity, err
 }
 
