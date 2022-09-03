@@ -29,7 +29,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 
 func (r userRepository) FindAll() ([]models.User, error) {
 	var entities []models.User
-	err := r.DB.Where("type_user = ? ", 2).Find(&entities).Error
+	err := r.DB.Where("type_user = ? ", 3).Find(&entities).Error
 	return entities, err
 }
 

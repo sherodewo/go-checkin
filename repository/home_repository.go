@@ -33,7 +33,7 @@ func (r homeRepository) FindAll() ([]models.Presence, error) {
 
 func (r homeRepository) FindAllWhere(operation string, orderType string, orderBy string, limit int, offset int, keyVal map[string]interface{}) ([]models.PresenceDatatable, error) {
 	var entity []models.PresenceDatatable
-	sql := fmt.Sprint("SELECT a.*, b.name from presence a LEFT JOIN user b on b.user_id = a.user_id")
+	sql := fmt.Sprint("SELECT a.*, b.name from presence a LEFT JOIN user b on b.user_id = a.user_id where b.type_user = 3")
 
 	q := r.DB.Raw(sql).Order(orderBy + " " + orderType).Limit(limit).Offset(offset)
 

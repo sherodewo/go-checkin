@@ -118,9 +118,11 @@ func (c *HomeController) DownloadExcel(ctx echo.Context) error {
 		} else {
 			checkout = "WORKING"
 		}
+		inTime := v.Checkin.Format(" 15:04 ")
+		outTime := v.Checkout.Format(" 15:04 ")
 		_ = f.SetCellValue("Sheet1", "A"+strconv.Itoa(i+2), v.Name)
-		_ = f.SetCellValue("Sheet1", "B"+strconv.Itoa(i+2), v.Checkin.Format("Monday ,02 January"))
-		_ = f.SetCellValue("Sheet1", "C"+strconv.Itoa(i+2), checkout)
+		_ = f.SetCellValue("Sheet1", "B"+strconv.Itoa(i+2), v.Checkin.Format("Monday ,02 January")+", "+inTime)
+		_ = f.SetCellValue("Sheet1", "C"+strconv.Itoa(i+2), checkout+", "+outTime)
 		_ = f.SetCellValue("Sheet1", "D"+strconv.Itoa(i+2), v.LocationName)
 		_ = f.SetCellValue("Sheet1", "E"+strconv.Itoa(i+2), v.CreatedAt.Format("Monday ,02 January"))
 	}

@@ -8,6 +8,7 @@ import (
 	"go-checkin/repository"
 	"go-checkin/utils"
 	"gorm.io/gorm"
+	"strconv"
 	"time"
 )
 
@@ -35,13 +36,14 @@ func (s *UserService) FindUserById(id string) (*models.User, error) {
 func (s *UserService) SaveUser(dto dto.UserDto) (*models.User, error) {
 	hashPassword, _ := utils.HashPassword(dto.Password)
 
+	typeUser, _ := strconv.Atoi(dto.UserRoleID)
 	entity := models.User{
 		Nik:        dto.Nik,
 		Name:       dto.Name,
 		Email:      dto.Email,
 		Password:   hashPassword,
 		IsActive:   dto.IsActive,
-		TypeUser:   dto.TypeUser,
+		TypeUser:   typeUser,
 		UserRoleID: dto.UserRoleID,
 		CreatedAt:  time.Now(),
 	}
